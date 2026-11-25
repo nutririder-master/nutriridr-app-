@@ -21,10 +21,11 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 
 - Il risultato non deve per forza comparire subito sul telefono. Va bene che arrivi via email qualche tempo dopo (decisione del 25/11/2026).
 - Gli artefatti di Claude con chiamate a Claude dentro la pagina non vanno bene: usano l'account Claude di chi visita la pagina, e i visitatori dell'evento non ce l'hanno.
-- Direzione attuale: modulo web, dati su Google Sheets, e un'attività pianificata sull'account Claude del team che legge le righe nuove, sceglie i due piatti e manda l'email da Gmail. Così non si pagano token e il testo libero viene capito senza dizionario di parole. Limiti: intervallo minimo di solito di un'ora, limiti d'uso dell'abbonamento, circa 500 email al giorno da Gmail.
-- Alternativa tenuta di riserva: algoritmo a regole (dizionario di sinonimi, negazioni, tolleranza ai refusi, filtro rigido sugli allergeni e punteggio sugli obiettivi) dentro Google Apps Script, con risultato immediato.
+- Direzione attuale (proposta del 25/11/2026, in attesa di conferma): modulo su Cloudflare, un Worker che salva il visitatore su Brevo e fa partire subito un'attività pianificata Claude tramite il suo endpoint API. L'attività legge da Brevo i contatti nuovi, li copia sul foglio Google, sceglie i due piatti e manda l'email con un template Brevo dal mittente NutriRider. Così non si pagano token e il testo libero viene capito senza dizionario di parole.
+- L'elaborazione deve partire su richiesta, non ogni ora (richiesta del 25/11/2026). Le attività pianificate a orario non scendono sotto l'ora, quindi si usa il trigger API: POST a `https://api.anthropic.com/v1/claude_code/routines/<trigger-id>/fire` con token bearer dell'attività, header `anthropic-beta: experimental-cc-routine-2026-04-01` e `anthropic-version: 2023-06-01`, corpo `{"text": "..."}` facoltativo. Limiti dichiarati nella documentazione: 30 avvii all'ora per singola attività, 100 all'ora per account, funzione sperimentale. Ogni avvio è una sessione nuova (qualche minuto di avvio) e consuma l'abbonamento. Ogni esecuzione deve quindi lavorare tutti i contatti in attesa, non solo l'ultimo, e un'esecuzione oraria fa da rete di sicurezza per gli avvii rifiutati.
+- Alternativa tenuta di riserva: algoritmo a regole (dizionario di sinonimi, negazioni, tolleranza ai refusi, filtro rigido sugli allergeni e punteggio sugli obiettivi) dentro il Worker Cloudflare, con risultato immediato e senza dipendere da Claude.
 - Allergie e intolleranze vanno raccolte come caselle da spuntare, non solo come testo libero: un errore lì è un rischio per la salute. I piatti con un allergene dichiarato vanno esclusi in modo rigido.
-- Le email ai visitatori partono da un indirizzo NutriRider, mai da quello dell'agenzia (decisione del 25/11/2026). L'agenzia lavora dietro le quinte. Il connettore Gmail di Claude è collegato all'account dell'agenzia, quindi l'invio non può farlo l'attività pianificata con quel connettore. Proposta: Claude scrive i piatti scelti sul foglio, e uno script Apps Script installato sull'account Google di NutriRider manda le email dalle righe pronte.
+- Le email ai visitatori partono da un indirizzo NutriRider, mai da quello dell'agenzia (decisione del 25/11/2026). L'agenzia lavora dietro le quinte. L'invio si fa con Brevo, su un account che l'utente crea per NutriRider (proposta del 25/11/2026). Il mittente deve stare su un dominio NutriRider autenticato su Brevo, non su @gmail.com. Piano gratuito: 300 email al giorno. Le chiavi API non passano mai dalla chat: per Claude si salvano con il modulo sicuro delle credenziali, per il Worker come secret Cloudflare. Due chiavi separate.
 - Privacy: allergie ed esigenze di salute sono dati sanitari per il GDPR. Servono un consenso esplicito al trattamento e un consenso separato per il marketing. L'informativa deve dire che le risposte vengono elaborate con Claude (Anthropic).
 
 ## Repository
@@ -33,8 +34,13 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - Il push funziona dal 25/11/2026, dopo che l'utente ha sistemato i ruoli su GitHub.
 - Struttura: progetto Cloudflare Workers con soli file statici. `wrangler.jsonc` pubblica la cartella `public/`. All'inizio c'era solo `public/index.html`, una pagina segnaposto "Nutririder App, In arrivo...".
 - Colori del brand presi dalla pagina segnaposto: sfondo crema `#FAF4E8`, verde `#2F6B4F`, arancio `#F28C38`.
+- Il sito ha il noindex dal 25/11/2026: meta robots in `public/index.html` e header `X-Robots-Tag` in `public/_headers`. Nessun `robots.txt` che blocca la scansione, altrimenti i motori non vedono il noindex. Ogni nuova pagina deve avere lo stesso meta tag.
 - `beecogh/nutririder-app` è un vecchio repository vuoto, da non usare più.
 - Branch: `main` è la versione da pubblicare, cioè il prodotto finito. Il lavoro si fa nel branch `contesto-progetto`. Questo `CLAUDE.md` serve solo a Claude per costruire: resta nel branch di lavoro e non va mai portato su `main`. Quando si pubblica su `main`, si portano solo i file del prodotto.
+
+## Foglio Google
+
+- "Database app nutririder": `118uNUi9MdJXpmeo85UPwosVJh6xVQ0Ru35Lfmzm0HNY`. Il 25/11/2026 era vuoto, con una sola scheda chiamata "Hoja 1" (impostazione in spagnolo). L'account dell'agenzia lo legge tramite il connettore Google Sheets.
 
 ## Regole di scrittura per i testi rivolti alle persone
 
@@ -49,21 +55,23 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 
 ## Lavoro fatto
 
-- 25/11/2026: analisi di fattibilità, confronto tra algoritmo a regole e attività pianificata Claude, verifica dei limiti degli artefatti, clonazione del repository, verifica dell'accesso in scrittura, creazione di questo file. Deciso che `CLAUDE.md` resta fuori da `main` e che le email partono da un indirizzo NutriRider.
+- 25/11/2026: analisi di fattibilità, confronto tra algoritmo a regole e attività pianificata Claude, verifica dei limiti degli artefatti, clonazione del repository, verifica dell'accesso in scrittura, creazione di questo file. Deciso che `CLAUDE.md` resta fuori da `main` e che le email partono da un indirizzo NutriRider. Impostato il noindex e pubblicato su `main`. Ricevuto il foglio Google da usare come database. Verificato nella documentazione il trigger API delle attività pianificate.
 
 ## Domande aperte
 
 - La lista dei piatti NutriRider, con ingredienti, allergeni e, se ci sono, kcal e macro.
 - Le necessità da mappare con Jordan.
 - Quante persone si aspettano all'evento (serve per i limiti di invio email).
-- L'indirizzo NutriRider da cui partono le email è un Gmail normale o un account Google Workspace? Cambia il limite di invio di Apps Script (circa 100 al giorno contro 1.500).
-- Chi ha accesso all'account Google di NutriRider per installare lo script e condividere il foglio con l'account dell'agenzia?
+- Conferma del flusso con Brevo e trigger API.
+- NutriRider ha un dominio suo, e qualcuno può modificarne i DNS per autenticarlo su Brevo?
+- Il repository è collegato a Cloudflare con pubblicazione automatica da `main`?
+- Piano Claude dell'account che esegue le attività: con molti visitatori i limiti d'uso contano.
 - Data dell'evento.
 
 ## Prossimi passi
 
-1. Pagina del modulo in `public/index.html`, nei colori del brand, pensata per il telefono.
-2. Script Google Apps Script che riceve il modulo e scrive la riga sul foglio.
+1. Pagina del modulo in `public/index.html`, nei colori del brand, pensata per il telefono, con noindex.
+2. Worker Cloudflare: riceve il modulo, salva il contatto su Brevo, chiama il trigger API.
 3. Foglio Google con due schede: "Risposte" e "Piatti" (i piatti modificabili dal team senza toccare codice).
-4. Istruzioni dell'attività pianificata: leggere le righe nuove, escludere i piatti incompatibili, scegliere i due migliori, mandare l'email, segnare la riga come fatta.
+4. Istruzioni dell'attività pianificata: leggere i contatti in attesa, escludere i piatti incompatibili, scegliere i due migliori, mandare l'email con Brevo, segnare il contatto come servito, aggiornare il foglio.
 5. Test con frasi realistiche prima dell'evento, poi generazione del QR con il link definitivo.
