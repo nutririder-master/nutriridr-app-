@@ -24,6 +24,7 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - Direzione attuale: modulo web, dati su Google Sheets, e un'attività pianificata sull'account Claude del team che legge le righe nuove, sceglie i due piatti e manda l'email da Gmail. Così non si pagano token e il testo libero viene capito senza dizionario di parole. Limiti: intervallo minimo di solito di un'ora, limiti d'uso dell'abbonamento, circa 500 email al giorno da Gmail.
 - Alternativa tenuta di riserva: algoritmo a regole (dizionario di sinonimi, negazioni, tolleranza ai refusi, filtro rigido sugli allergeni e punteggio sugli obiettivi) dentro Google Apps Script, con risultato immediato.
 - Allergie e intolleranze vanno raccolte come caselle da spuntare, non solo come testo libero: un errore lì è un rischio per la salute. I piatti con un allergene dichiarato vanno esclusi in modo rigido.
+- Le email ai visitatori partono da un indirizzo NutriRider, mai da quello dell'agenzia (decisione del 25/11/2026). L'agenzia lavora dietro le quinte. Il connettore Gmail di Claude è collegato all'account dell'agenzia, quindi l'invio non può farlo l'attività pianificata con quel connettore. Proposta: Claude scrive i piatti scelti sul foglio, e uno script Apps Script installato sull'account Google di NutriRider manda le email dalle righe pronte.
 - Privacy: allergie ed esigenze di salute sono dati sanitari per il GDPR. Servono un consenso esplicito al trattamento e un consenso separato per il marketing. L'informativa deve dire che le risposte vengono elaborate con Claude (Anthropic).
 
 ## Repository
@@ -33,6 +34,7 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - Struttura: progetto Cloudflare Workers con soli file statici. `wrangler.jsonc` pubblica la cartella `public/`. All'inizio c'era solo `public/index.html`, una pagina segnaposto "Nutririder App, In arrivo...".
 - Colori del brand presi dalla pagina segnaposto: sfondo crema `#FAF4E8`, verde `#2F6B4F`, arancio `#F28C38`.
 - `beecogh/nutririder-app` è un vecchio repository vuoto, da non usare più.
+- Branch: `main` è la versione da pubblicare, cioè il prodotto finito. Il lavoro si fa nel branch `contesto-progetto`. Questo `CLAUDE.md` serve solo a Claude per costruire: resta nel branch di lavoro e non va mai portato su `main`. Quando si pubblica su `main`, si portano solo i file del prodotto.
 
 ## Regole di scrittura per i testi rivolti alle persone
 
@@ -47,14 +49,15 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 
 ## Lavoro fatto
 
-- 25/11/2026: analisi di fattibilità, confronto tra algoritmo a regole e attività pianificata Claude, verifica dei limiti degli artefatti, clonazione del repository, verifica dell'accesso in scrittura, creazione di questo file.
+- 25/11/2026: analisi di fattibilità, confronto tra algoritmo a regole e attività pianificata Claude, verifica dei limiti degli artefatti, clonazione del repository, verifica dell'accesso in scrittura, creazione di questo file. Deciso che `CLAUDE.md` resta fuori da `main` e che le email partono da un indirizzo NutriRider.
 
 ## Domande aperte
 
 - La lista dei piatti NutriRider, con ingredienti, allergeni e, se ci sono, kcal e macro.
 - Le necessità da mappare con Jordan.
 - Quante persone si aspettano all'evento (serve per i limiti di invio email).
-- Da quale account Gmail partono le email: quello collegato a Claude è dell'agenzia, non di NutriRider.
+- L'indirizzo NutriRider da cui partono le email è un Gmail normale o un account Google Workspace? Cambia il limite di invio di Apps Script (circa 100 al giorno contro 1.500).
+- Chi ha accesso all'account Google di NutriRider per installare lo script e condividere il foglio con l'account dell'agenzia?
 - Data dell'evento.
 
 ## Prossimi passi
