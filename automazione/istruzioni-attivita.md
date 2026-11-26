@@ -90,7 +90,7 @@ Come riempire i campi:
 - `anteprima`: una riga con i nomi dei piatti scelti, per esempio "Insalata di ceci e polenta con ragù di lenticchie, ecco perché fanno per te." Accorcia i nomi lunghi.
 - `nome`: il nome della persona, con la prima lettera maiuscola.
 - `intro`: "In base a quello che ci hai raccontato, questi sono i due piatti Nutririder che fanno per te." Con un solo piatto: "In base a quello che ci hai raccontato, questo è il piatto Nutririder che fa per te."
-- `profilo`: da due a cinque etichette brevi su chi è la persona, prese dalle colonne G, H e U: Vegana, Vegetariana, Fa sport, Stomaco delicato, In gravidanza, Più energia, Leggero e saziante, "Senza [allergene]" per ogni allergia (per esempio Senza glutine, Senza lattosio, Senza frutta a guscio), Senza microonde se c'è "non posso riscaldare". Lista vuota se non c'è niente.
+- `profilo`: da due a cinque etichette brevi su chi è la persona, prese dalle colonne G, H e U: Vegana, Vegetariana, Fa sport, Stomaco delicato, In gravidanza, Più energia, Leggero e saziante, "Senza [allergene]" per ogni allergia (per esempio Senza glutine, Senza lattosio, Senza frutta a guscio, e anche per l'allergia scritta con Altro, come Senza kiwi), Senza microonde se c'è "non posso riscaldare". Lista vuota se non c'è niente.
 - `logo_url`, `link_cta`: dalle Impostazioni. `contatto`: `rispondi_a`, oppure vuoto.
 - `piatti`: uno o due elementi, nell'ordine di preferenza, con `numero` 1 e 2.
   - `nome` e `descrizione` dalla scheda Piatti. Se la descrizione ripete il nome, lasciala vuota.
