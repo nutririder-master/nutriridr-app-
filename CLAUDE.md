@@ -34,6 +34,7 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - Il push funziona dal 25/11/2026, dopo che l'utente ha sistemato i ruoli su GitHub.
 - Struttura: progetto Cloudflare Workers con soli file statici. `wrangler.jsonc` pubblica la cartella `public/`. All'inizio c'era solo `public/index.html`, una pagina segnaposto "Nutririder App, In arrivo...".
 - Il sito ha il noindex dal 25/11/2026: meta robots in `public/index.html` e header `X-Robots-Tag` in `public/_headers`. Nessun `robots.txt` che blocca la scansione, altrimenti i motori non vedono il noindex. Ogni nuova pagina deve avere lo stesso meta tag.
+- Pubblicazione: Cloudflare Workers Builds (worker "app") costruisce e pubblica da solo ogni push su `main`. Lo stato si vede nei check del commit su GitHub (`gh api repos/nutririder-master/nutriridr-app-/commits/<sha>/check-runs`). Il 26/11/2026 il modulo è stato pubblicato su `main` (commit abf382d), ancora senza `ENDPOINT`.
 - `beecogh/nutririder-app` è un vecchio repository vuoto, da non usare più.
 - Branch: `main` è la versione da pubblicare, cioè il prodotto finito. Il lavoro si fa nel branch `contesto-progetto`. Questo `CLAUDE.md` serve solo a Claude per costruire: resta nel branch di lavoro e non va mai portato su `main`. Quando si pubblica su `main`, si portano solo i file del prodotto.
 
@@ -90,7 +91,7 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 - Le necessità da mappare con Jordan (gli obiettivi del modulo sono provvisori).
 - Quante persone si aspettano all'evento e la data.
 - Autenticazione del dominio nutririder.com su Brevo. info@nutririder.com è attivo?
-- Il repository pubblica su Cloudflare in automatico da `main`? Qual è l'indirizzo del sito?
+- Qual è l'indirizzo pubblico del sito (dominio o workers.dev)? Serve per il QR e per `logo_url`.
 - Piano Claude dell'account che esegue l'attività: con molti visitatori i limiti d'uso contano.
 - Informativa privacy completa di Nutririder (ragione sociale, contatti del titolare). Nel modulo c'è un testo breve provvisorio.
 - Link per il bottone in fondo all'email (link_cta).
@@ -99,7 +100,7 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 
 1. L'utente aggiunge il connettore Google Sheets all'attività e genera indirizzo API e token da claude.ai.
 2. L'utente incolla `apps-script/Codice.gs` nel foglio, salva URL e token nelle Proprietà script, pubblica l'applicazione web e passa l'indirizzo.
-3. Inserire l'indirizzo in `ENDPOINT`, pubblicare il modulo su `main`.
+3. Inserire l'indirizzo in `ENDPOINT` e pubblicare su `main` (il modulo è già online, manca solo il collegamento).
 4. Test con `invio_attivo` su "no": invio dal modulo, riga sul foglio, avvio di Claude, piatti scritti.
 5. Chiave Brevo salvata con il modulo sicuro delle credenziali (host api.brevo.com, header api-key), poi test con `email_test` compilato.
 6. Piatti veri, test con frasi realistiche, rete di sicurezza oraria prima dell'evento, QR con il link definitivo.
