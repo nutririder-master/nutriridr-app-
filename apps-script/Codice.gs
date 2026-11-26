@@ -1,5 +1,5 @@
 /**
- * NutriRider, ricezione del modulo dell'evento.
+ * Nutririder, ricezione del modulo dell'evento.
  *
  * Va incollato nell'editor Apps Script del foglio "Database app nutririder"
  * (Estensioni > Apps Script) e pubblicato come applicazione web.
@@ -73,7 +73,7 @@ function doPost(e) {
 
 // Risponde anche alle aperture dal browser, utile per controllare che lo script sia online.
 function doGet() {
-  return risposta({ ok: true, servizio: 'modulo NutriRider' });
+  return risposta({ ok: true, servizio: 'modulo Nutririder' });
 }
 
 function avviaClaude(testo) {
