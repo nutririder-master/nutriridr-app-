@@ -36,7 +36,7 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - Struttura: progetto Cloudflare Workers con soli file statici. `wrangler.jsonc` pubblica la cartella `public/`. All'inizio c'era solo `public/index.html`, una pagina segnaposto "Nutririder App, In arrivo...".
 - Il sito ha il noindex dal 25/11/2026: meta robots in `public/index.html` e header `X-Robots-Tag` in `public/_headers`. Nessun `robots.txt` che blocca la scansione, altrimenti i motori non vedono il noindex. Ogni nuova pagina deve avere lo stesso meta tag.
 - Pubblicazione: Cloudflare Workers Builds (worker "app") costruisce e pubblica da solo ogni push su `main`. Lo stato si vede nei check del commit su GitHub (`gh api repos/nutririder-master/nutriridr-app-/commits/<sha>/check-runs`). Il 26/11/2026 il modulo è stato pubblicato su `main` (commit abf382d), ancora senza `ENDPOINT`.
-- `beecogh/nutririder-app` non va più usato per nessun motivo (decisione dell'utente del 26/11/2026): niente clone, niente push, niente riferimenti. Il 26/11/2026 è stata cancellata la copia locale, che era vuota.
+- `beecogh/nutririder-app` non va più usato per nessun motivo (decisione dell'utente del 26/11/2026): niente clone, niente push, niente riferimenti. Il 26/11/2026 è stata cancellata la copia locale, che era vuota, e l'utente l'ha tolto dai repository dell'ambiente Nutririder, che ora contiene solo `nutririder-master/nutriridr-app-`.
 - Branch: `main` è la versione da pubblicare, cioè il prodotto finito. Il lavoro si fa nel branch `contesto-progetto`. Questo `CLAUDE.md` serve solo a Claude per costruire: resta nel branch di lavoro e non va mai portato su `main`. Quando si pubblica su `main`, si portano solo i file del prodotto.
 
 ## Foglio Google
