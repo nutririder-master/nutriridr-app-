@@ -145,7 +145,9 @@
           <label class="chip"><input type="checkbox" value="senape"><span>Senape</span></label>
           <label class="chip"><input type="checkbox" value="solfiti"><span>Solfiti</span></label>
           <label class="chip"><input type="checkbox" value="lupini"><span>Lupini</span></label>
+          <label class="chip"><input type="checkbox" value="altro" id="allergia_altro_check"><span>Altro</span></label>
         </div>
+        <div class="campo" id="allergia_altro_box" hidden style="margin-top:12px;"><label class="etichetta" for="allergia_altro">Quale altra allergia o intolleranza hai?</label><input id="allergia_altro" name="allergia_altro" type="text" maxlength="120" placeholder="Per esempio: kiwi, pesche, nichel"></div>
       </fieldset>
 
       <fieldset class="scheda">
@@ -211,6 +213,13 @@
 
   function valore(id) { return document.getElementById(id).value.trim(); }
 
+  var altroCheck = document.getElementById('allergia_altro_check');
+  var altroBox = document.getElementById('allergia_altro_box');
+  altroCheck.addEventListener('change', function () {
+    altroBox.hidden = !altroCheck.checked;
+    if (altroCheck.checked) document.getElementById('allergia_altro').focus();
+  });
+
   function mostraErrore(testo) { boxErrore.textContent = testo; }
 
   form.addEventListener('submit', function (e) {
@@ -223,7 +232,7 @@
       email: valore('email'),
       telefono: valore('telefono'),
       obiettivi: selezionati('obiettivi'),
-      allergie: selezionati('allergie'),
+      allergie: selezionati('allergie').filter(function (a) { return a !== 'altro'; }),
       complicazioni: selezionati('complicazioni'),
       cosa_ti_piace: valore('cosa_ti_piace'),
       cosa_non_ti_piace: valore('cosa_non_ti_piace'),
@@ -236,6 +245,11 @@
     if (!dati.nome) return mostraErrore('Scrivi il tuo nome.');
     if (!dati.cognome) return mostraErrore('Scrivi il tuo cognome.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(dati.email)) return mostraErrore("Controlla l'indirizzo email.");
+    if (altroCheck.checked) {
+      var altra = valore('allergia_altro');
+      if (!altra) return mostraErrore('Scrivi quale altra allergia o intolleranza hai, così la teniamo in conto.');
+      dati.altre_esigenze = 'Altra allergia o intolleranza: ' + altra + '.' + (dati.altre_esigenze ? ' ' + dati.altre_esigenze : '');
+    }
     if (!dati.consenso_privacy) return mostraErrore('Per mandarti i piatti ci serve il consenso al trattamento dei dati.');
     if (!ENDPOINT) return mostraErrore('Il modulo non è ancora collegato, chiedi aiuto allo staff.');
 
