@@ -89,6 +89,7 @@
     .grazie h1 { font-size: 30px; }
     .grazie p { color: var(--muted); }
     .payoff { font-family: var(--f-display); font-weight: 500; color: var(--green); margin-top: 28px; }
+    p, h1, legend, .consenso span, .etichetta { text-wrap: pretty; }
     [hidden] { display: none !important; }
   </style>
 </head>
@@ -97,8 +98,8 @@
   <section id="modulo-sezione">
     <header>
       <img class="logo" src="logo.png" width="225" height="120" alt="Nutririder">
-      <h1>Ti diciamo quali due piatti fanno per te</h1>
-      <p class="intro">Due minuti di domande. Poi ti mandiamo per email i due piatti Nutririder più adatti a come mangi.</p>
+      <h1>Ti diciamo quali due piatti fanno per&nbsp;te</h1>
+      <p class="intro">Rispondi a qualche domanda, ci vogliono due minuti, e ti mandiamo per email i due piatti Nutririder più adatti a come&nbsp;mangi.</p>
     </header>
 
     <form id="modulo" novalidate>
@@ -114,7 +115,7 @@
 
       <fieldset class="scheda">
         <legend>Cosa ti descrive</legend>
-        <p class="aiuto">Puoi sceglierne più di uno, o nessuno.</p>
+        <p class="aiuto">Puoi sceglierne più di uno, oppure&nbsp;nessuno.</p>
         <div class="chips" data-gruppo="obiettivi">
           <label class="chip"><input type="checkbox" value="vegano"><span>Vegana</span></label>
           <label class="chip"><input type="checkbox" value="vegetariano"><span>Vegetariana</span></label>
@@ -128,7 +129,7 @@
 
       <fieldset class="scheda">
         <legend>Allergie e intolleranze</legend>
-        <p class="aiuto">Tocca quelle che hai. I piatti che le contengono vengono esclusi.</p>
+        <p class="aiuto">Tocca quelle che hai, così escludiamo i piatti che le&nbsp;contengono.</p>
         <div class="chips allergie" data-gruppo="allergie">
           <label class="chip"><input type="checkbox" value="glutine"><span>Glutine (celiachia)</span></label>
           <label class="chip"><input type="checkbox" value="latte"><span>Latte e lattosio</span></label>
@@ -149,7 +150,7 @@
 
       <fieldset class="scheda">
         <legend>Cosa ti complica il pranzo</legend>
-        <p class="aiuto">Facoltativo. Ci aiuta a capire cosa ti serve davvero.</p>
+        <p class="aiuto">La risposta è facoltativa, ma ci aiuta a capire cosa ti serve&nbsp;davvero.</p>
         <div class="chips" data-gruppo="complicazioni">
           <label class="chip"><input type="checkbox" value="non posso riscaldare"><span>Non ho dove riscaldare</span></label>
           <label class="chip"><input type="checkbox" value="pausa breve"><span>Ho poco tempo in pausa</span></label>
@@ -172,12 +173,12 @@
       <div class="trappola" aria-hidden="true"><label for="sito_web">Lascia vuoto</label><input id="sito_web" name="sito_web" type="text" tabindex="-1" autocomplete="off"></div>
 
       <div class="consensi">
-      <label class="consenso"><input type="checkbox" id="consenso_privacy"><span>Acconsento al trattamento dei miei dati, comprese allergie ed esigenze alimentari, per ricevere i piatti consigliati. Obbligatorio.</span></label>
-      <label class="consenso"><input type="checkbox" id="consenso_marketing"><span>Voglio ricevere da Nutririder novità e offerte via email. Facoltativo.</span></label>
+      <label class="consenso"><input type="checkbox" id="consenso_privacy"><span>Acconsento al trattamento dei miei dati, comprese allergie ed esigenze alimentari, per ricevere i piatti consigliati (obbligatorio).</span></label>
+      <label class="consenso"><input type="checkbox" id="consenso_marketing"><span>Voglio ricevere da Nutririder novità e offerte via email (facoltativo).</span></label>
       </div>
       <details>
         <summary>Come usiamo i tuoi dati</summary>
-        <p>Titolare del trattamento è Nutririder. Usiamo nome, email e risposte per scegliere i due piatti e mandarteli per email. Le risposte vengono elaborate con Claude, un servizio di Anthropic, e conservate su Google Sheets. Se hai acconsentito, ti scriveremo anche per novità e offerte. Puoi chiedere in ogni momento di vedere o cancellare i tuoi dati scrivendo a info@nutririder.com.</p>
+        <p>Titolare del trattamento è Nutririder. Usiamo nome, email e risposte per scegliere i due piatti e mandarteli per email. Le risposte vengono elaborate con Claude, un servizio di Anthropic, e conservate su Google Sheets. Se hai acconsentito, ti scriveremo anche per novità e offerte. Puoi chiedere in ogni momento di vedere o cancellare i tuoi dati scrivendo a&nbsp;info@nutririder.com.</p>
       </details>
 
       <button type="submit" id="invia">Scopri i tuoi piatti</button>
@@ -188,8 +189,8 @@
   <section id="grazie" class="grazie" hidden>
     <img class="logo" src="logo.png" width="225" height="120" alt="Nutririder">
     <h1>Fatto, <span id="grazie-nome"></span></h1>
-    <p>Entro qualche minuto ti arriva una email con i tuoi due piatti. Se non la vedi, controlla anche nello spam.</p>
-    <p class="payoff">Mangiare bene, anche senza tempo.</p>
+    <p>Entro qualche minuto ti arriva una email con i tuoi due piatti. Se non la vedi, controlla anche nella cartella&nbsp;spam.</p>
+    <p class="payoff">Mangiare bene, anche senza&nbsp;tempo.</p>
   </section>
 </main>
 
@@ -236,7 +237,7 @@
     if (!dati.cognome) return mostraErrore('Scrivi il tuo cognome.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(dati.email)) return mostraErrore("Controlla l'indirizzo email.");
     if (!dati.consenso_privacy) return mostraErrore('Per mandarti i piatti ci serve il consenso al trattamento dei dati.');
-    if (!ENDPOINT) return mostraErrore('Il modulo non è ancora collegato. Chiedi allo staff.');
+    if (!ENDPOINT) return mostraErrore('Il modulo non è ancora collegato, chiedi aiuto allo staff.');
 
     bottone.disabled = true;
     bottone.textContent = 'Invio in corso...';
