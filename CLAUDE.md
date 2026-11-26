@@ -57,6 +57,11 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - Foto dei piatti (richiesta dell'utente del 26/11/2026): colonne `foto_url` (N) e `foto_credito` (O) nella scheda Piatti, ancora vuote. Il template mostra la foto in cima alla scheda del piatto con sotto "Foto indicativa" (più l'autore se c'è). L'utente ha chiesto foto stock gratuite scelte da Claude. Tentativi del 26/11/2026: Unsplash e Pexels bloccano gli accessi automatici con controlli anti-bot (non vanno aggirati, il sistema lo ha negato), Wikimedia Commons risponde 429 all'IP condiviso, Pexels non rilascia più chiavi API, Openverse ha esaurito la quota anonima giornaliera dell'IP condiviso. Ripresa programmata alle 17:50 del 26/11/2026 (scheduled task `trig_01VfhhV9hipbYg9WCcpKwXE4`) per riprovare con Openverse. Formato deciso: 1036x520 JPEG in `public/piatti/NXX.jpg`, pubblicato su https://app.nutririder.com/piatti/NXX.jpg. Rete dell'ambiente: api.openverse.org aperto, Pexels e Wikimedia tolti.
 - `logo_url` = https://app.nutririder.com/logo.png. Il modulo è pubblicato su https://app.nutririder.com/ (verificato il 26/11/2026: ultima versione, noindex attivo).
 
+## Scelta dei piatti
+
+- Dal 26/11/2026 (dopo lo stress test dell'utente) le regole hanno due livelli. Esclusioni assolute, mai superate: allergeni spuntati, allergia scritta con Altro, allergie nei testi liberi, ingredienti o cotture che la persona non vuole ("senza gamberi" esclude ogni piatto con gamberi, anche come condimento; nel dubbio si esclude), vegetariano e vegano, e per la gravidanza solo i cibi a rischio (pesce affumicato o crudo, salumi e carni crude, formaggi molli, non pastorizzati, uova crude, germogli). Preferenze, che ordinano soltanto: profili, gusti, esigenze in K, senza glutine/lattosio, si mangia freddo, varietà.
+- Sempre due piatti tra quelli che superano le esclusioni. Uno solo soltanto se ne resta uno, con nota "un solo piatto compatibile" in colonna T. Il caso che ha portato alla modifica: riga di Arash (gravidanza + celiachia + niente pomodoro e formaggi), che con la vecchia regola "solo piatti etichettati gravidanza" aveva ricevuto un piatto solo.
+
 ## File del progetto
 
 - `public/index.html`: il modulo. La costante `ENDPOINT` nello script va riempita con l'indirizzo dell'applicazione web Apps Script.

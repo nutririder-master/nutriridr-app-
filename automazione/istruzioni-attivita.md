@@ -26,14 +26,30 @@ Prima di lavorare una riga, scrivi nella colonna O "in lavorazione" e nella colo
 
 ## 3. Scegli i due piatti
 
-Per ogni persona, in quest'ordine:
+I criteri sono di due livelli: le esclusioni assolute decidono quali piatti si possono proporre, le preferenze decidono solo l'ordine.
 
-1. Escludi ogni piatto che contiene un allergene della colonna H. Confronta sia la colonna allergeni del piatto sia gli ingredienti: per esempio "latte" esclude anche burro, panna, formaggi, feta, parmigiano, yogurt; "glutine" esclude pasta di grano, pane, farro, orzo, couscous; "frutta a guscio" esclude mandorle, noci, nocciole, anacardi, pistacchi.
-2. Se nella colonna K c'è "Altra allergia o intolleranza: ...", la persona l'ha scritta con l'opzione Altro del modulo: trattala esattamente come un allergene spuntato nella colonna H, ed escludi ogni piatto che contiene quell'ingrediente o un suo derivato. Leggi poi i testi liberi (colonne I, J, K). Se lì compare un'allergia o un'intolleranza non spuntata nella colonna H, trattala come un allergene ed escludi i piatti che la contengono. Nel dubbio, escludi. Escludi anche i piatti con ingredienti che la persona dice di non mangiare o non gradire ("niente funghi", "il pesce non lo reggo", "non mangio carne").
-3. Se tra i profili c'è "vegetariano", escludi carne, pesce, crostacei, molluschi e salumi. Se c'è "vegano", escludi anche latte, latticini, uova e miele.
-4. Se tra i profili c'è "gravidanza", scegli solo tra i piatti che hanno "gravidanza" in `adatto_a`. Anche se ne restano pochi, non aggiungere altri piatti: in gravidanza vanno evitati pesce affumicato o crudo, salumi e formaggi molli, e la scheda non sempre lo dice.
-5. Tra i piatti rimasti, dai la precedenza a quelli la cui colonna `adatto_a` copre più profili della persona, poi a quelli che corrispondono a cosa le piace (colonne I e K). Se ha spuntato glutine o latte, preferisci i piatti con "senza glutine" o "senza lattosio". Se ha spuntato tre o più allergeni, preferisci quelli con "privo di allergeni". Se nella colonna U c'è "non posso riscaldare", preferisci i piatti con `si_mangia_freddo` = "sì" e dillo nella spiegazione. A parità, preferisci due piatti diversi tra loro (per esempio non due piatti di pasta).
-6. Scegli i due migliori. Se ne resta solo uno, scegli quello. Se non ne resta nessuno, non inventare piatti: segna stato "errore" con nota "nessun piatto compatibile, da gestire a mano" e passa alla riga successiva.
+Esclusioni assolute. Un piatto escluso qui non si propone mai, per nessun motivo, nemmeno per arrivare a due piatti:
+
+1. Gli allergeni della colonna H. Confronta sia la colonna allergeni del piatto sia gli ingredienti: per esempio "latte" esclude anche burro, panna, formaggi, feta, parmigiano, yogurt; "glutine" esclude pasta di grano, pane, farro, orzo, couscous; "frutta a guscio" esclude mandorle, noci, nocciole, anacardi, pistacchi.
+2. L'allergia scritta con l'opzione Altro del modulo, che trovi in testa alla colonna K come "Altra allergia o intolleranza: ...". Vale come un allergene della colonna H: escludi ogni piatto che contiene quell'ingrediente o un suo derivato.
+3. Le allergie o intolleranze scritte nei testi liberi (colonne I, J, K), anche se non sono spuntate.
+4. Gli ingredienti che la persona dice di non mangiare o di non volere, in qualunque forma lo scriva ("senza gamberi", "niente funghi", "odio il pomodoro", "il pesce non lo reggo", "non mangio carne"). Escludi ogni piatto che li contiene, anche solo come condimento o salsa. Se la persona chiede di evitare un modo di cottura ("niente lessato", "niente fritto"), escludi i piatti cotti in quel modo. Nel dubbio, escludi.
+5. Se tra i profili c'è "vegetariano", escludi carne, pesce, crostacei, molluschi e salumi. Se c'è "vegano", escludi anche latte, latticini, uova e miele.
+6. Se tra i profili c'è "gravidanza", escludi i piatti con pesce affumicato o crudo, salumi e carni crude o poco cotte (per esempio bresaola e prosciutto crudo), formaggi molli o a crosta fiorita (per esempio stracchino, gorgonzola, brie), formaggi freschi non pastorizzati, uova crude o poco cotte, germogli crudi. Gli altri piatti si possono proporre anche se non hanno "gravidanza" in `adatto_a`.
+
+Preferenze, che servono solo a mettere in ordine i piatti rimasti, dal più adatto al meno adatto:
+
+- prima i piatti la cui colonna `adatto_a` copre più profili della persona (per la gravidanza, prima quelli con "gravidanza" in `adatto_a`);
+- poi quelli che corrispondono a cosa le piace (colonne I e K) e alle esigenze scritte in K, per esempio un piatto "digeribile" per chi scrive di avere reflusso;
+- se ha spuntato glutine o latte, i piatti con "senza glutine" o "senza lattosio"; se ha spuntato tre o più allergeni, quelli con "privo di allergeni";
+- se nella colonna U c'è "non posso riscaldare", i piatti con `si_mangia_freddo` = "sì", da citare nella spiegazione;
+- a parità, due piatti diversi tra loro (per esempio non due piatti di pasta).
+
+Quanti piatti proporre:
+
+- Proponi sempre due piatti diversi, i primi due della classifica, scelti tra quelli che hanno superato le esclusioni assolute. Vale anche quando solo uno dei due corrisponde al profilo: per l'altro spiega in modo onesto perché va bene comunque, per esempio perché rispetta le sue allergie e contiene qualcosa che le piace.
+- Proponi un solo piatto soltanto se, dopo le esclusioni assolute, ne resta uno solo. In quel caso aggiungi in fondo alla colonna T, dopo le altre note, "un solo piatto compatibile", così il team lo vede.
+- Se non ne resta nessuno, non inventare piatti: segna stato "errore" con nota "nessun piatto compatibile, da gestire a mano" e passa alla riga successiva.
 
 Non proporre mai un piatto che non è nella scheda Piatti, e non cambiarne nome o ingredienti.
 
