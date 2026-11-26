@@ -43,7 +43,7 @@
         <!-- Apertura -->
         <tr><td class="pad" style="background:#E6EEE8; border-radius:24px 24px 0 0; padding:36px 40px 30px;">
           <div style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#B8611A; padding-bottom:10px;">Scelti per te</div>
-          <div class="titolo" style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:30px; line-height:36px; font-weight:700; color:#2F6B4F;">Ciao {{ params.nome }}, ecco i tuoi piatti</div>
+          <div class="titolo" style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:30px; line-height:36px; font-weight:700; color:#2F6B4F;">Ciao {{ params.nome }}, ecco i tuoi&nbsp;piatti</div>
           <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:17px; line-height:26px; color:#4F5A52; padding-top:12px;">{{ params.intro }}</div>
           {% if params.profilo %}
           <div style="padding-top:18px; font-size:0; line-height:0;">
@@ -60,6 +60,7 @@
             <tr><td style="padding:0; line-height:0; font-size:0;">
               <img src="{{ piatto.foto }}" width="518" alt="{{ piatto.nome }}" style="display:block; width:100%; max-width:518px; height:auto; border:0; border-radius:19px 19px 0 0;">
             </td></tr>
+            <tr><td style="padding:6px 24px 0; font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:11px; line-height:15px; color:#8A928C;">Foto indicativa{% if piatto.foto_credito %} di {{ piatto.foto_credito }}{% endif %}</td></tr>
             {% endif %}
             <tr><td style="padding:24px 24px 22px;">
 
@@ -111,8 +112,8 @@
         <tr><td class="pad" style="padding:32px 40px 40px;">
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
             <tr><td align="center" style="background:#2F6B4F; border-radius:20px; padding:32px 28px;">
-              <div class="cta-titolo" style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:24px; line-height:30px; font-weight:700; color:#FFFFFF;">Ti ricordi cosa hai mangiato ieri a pranzo?</div>
-              <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:16px; line-height:24px; color:#E6EEE8; padding-top:10px;">Noi sì, perché è scritto qui sopra. Tieni questa email: la prossima volta che non sai cosa mangiare, riparti da questi piatti.</div>
+              <div class="cta-titolo" style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:24px; line-height:30px; font-weight:700; color:#FFFFFF;">Ti ricordi cosa hai mangiato ieri a&nbsp;pranzo?</div>
+              <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:16px; line-height:24px; color:#E6EEE8; padding-top:10px;">Noi sì, perché te lo abbiamo scritto qui sopra. Tieni questa email e, la prossima volta che non sai cosa mangiare, riparti da questi&nbsp;piatti.</div>
               {% if params.link_cta %}
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top:22px;">
                 <tr><td align="center" style="background:#F28C38; border-radius:14px;">
@@ -129,12 +130,12 @@
 
     <!-- Piè di pagina -->
     <tr><td align="center" class="pad" style="padding:26px 30px 0;">
-      <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:16px; font-style:italic; color:#2F6B4F;">Mangiare bene, anche senza tempo.</div>
+      <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:16px; font-style:italic; color:#2F6B4F;">Mangiare bene, anche senza&nbsp;tempo.</div>
       <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:13px; line-height:20px; color:#4F5A52; padding-top:14px;">
-        Hai un'allergia grave? Prima di mangiare un piatto controlla sempre gli ingredienti{% if params.contatto %}, o scrivici a <a href="mailto:{{ params.contatto }}" style="color:#2F6B4F;">{{ params.contatto }}</a>{% endif %}.
+        Hai un'allergia grave? Prima di mangiare un piatto controlla sempre gli&nbsp;ingredienti{% if params.contatto %}, oppure scrivici a&nbsp;<a href="mailto:{{ params.contatto }}" style="color:#2F6B4F;">{{ params.contatto }}</a>{% endif %}.
       </div>
       <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:12px; line-height:18px; color:#8A928C; padding-top:12px;">
-        Ricevi questa email perché hai risposto al questionario Nutririder. Siena, <a href="https://nutririder.com" style="color:#8A928C;">nutririder.com</a>
+        Ricevi questa email perché hai risposto al questionario di Nutririder, la startup di Siena che trovi su&nbsp;<a href="https://nutririder.com" style="color:#8A928C;">nutririder.com</a>.
       </div>
     </td></tr>
 
