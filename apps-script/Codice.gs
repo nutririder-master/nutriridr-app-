@@ -17,7 +17,9 @@
 
 var SCHEDA_RISPOSTE = 'Risposte';
 
-var OBIETTIVI_AMMESSI = ['in forma', 'proteico', 'cuore', 'ipocalorica', 'chetogenica', 'vegetariana', 'vegana'];
+var OBIETTIVI_AMMESSI = ['vegano', 'vegetariano', 'sportivo', 'digeribile', 'gravidanza', 'alta densità', 'ridotta densità'];
+var COMPLICAZIONI_AMMESSE = ['non posso riscaldare', 'pausa breve', 'budget limitato', 'non riesco a prepararlo',
+  'non posso uscire', 'non trovo cosa mi soddisfa', 'voglio sapere cosa mangio', 'voglio decidere prima'];
 var ALLERGENI_AMMESSI = ['glutine', 'crostacei', 'uova', 'pesce', 'arachidi', 'soia', 'latte', 'frutta a guscio',
   'sedano', 'senape', 'sesamo', 'solfiti', 'lupini', 'molluschi'];
 
@@ -47,7 +49,9 @@ function doPost(e) {
       dati.consenso_privacy === true ? 'sì' : 'no',
       dati.consenso_marketing === true ? 'sì' : 'no',
       '', // avvio_claude
-      'nuovo'
+      'nuovo',
+      '', '', '', '', '', // piatto_1, piatto_2, spiegazione, email_inviata_il, note
+      filtra(dati.complicazioni, COMPLICAZIONI_AMMESSE).join(', ')
     ];
 
     var foglio = SpreadsheetApp.getActive().getSheetByName(SCHEDA_RISPOSTE);

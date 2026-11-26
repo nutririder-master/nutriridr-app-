@@ -41,10 +41,10 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 ## Foglio Google
 
 - "Database app nutririder": `118uNUi9MdJXpmeo85UPwosVJh6xVQ0Ru35Lfmzm0HNY`. Lingua italiana e fuso Europe/Rome (impostati il 26/11/2026, prima era es_MX). L'account dell'agenzia lo legge e lo modifica tramite il connettore Google Sheets.
-- Scheda Risposte, colonne A-T: ricevuta_il, id, nome, cognome, email, telefono, obiettivi, allergie, cosa_ti_piace, cosa_non_ti_piace, altre_esigenze, consenso_privacy, consenso_marketing, avvio_claude, stato, piatto_1, piatto_2, spiegazione, email_inviata_il, note. Stati: nuovo, in lavorazione, pronta (piatti scelti, email non inviata), inviata, errore.
-- Scheda Piatti, colonne A-L: id, nome, descrizione, ingredienti, allergeni, adatto_a, kcal, proteine_g, carboidrati_g, grassi_g, attivo, note. Ora contiene 9 piatti di ESEMPIO inventati (P01-P09), da sostituire con quelli veri.
+- Scheda Risposte, colonne A-U: ricevuta_il, id, nome, cognome, email, telefono, obiettivi (i profili), allergie, cosa_ti_piace, cosa_non_ti_piace, altre_esigenze, consenso_privacy, consenso_marketing, avvio_claude, stato, piatto_1, piatto_2, spiegazione, email_inviata_il, note, cosa_complica_il_pranzo. Stati: nuovo, in lavorazione, pronta (piatti scelti, email non inviata), inviata, errore.
+- Scheda Piatti, colonne A-M: id, nome, descrizione, ingredienti, allergeni, adatto_a, kcal, proteine_g, carboidrati_g, grassi_g, attivo, note, si_mangia_freddo. Dal 26/11/2026 contiene i 20 piatti veri (N01-N20) del PDF di Nutririder "NutriRider_piatti": 10 profili con 2 piatti ciascuno, menù invernale gennaio-febbraio. Il PDF dà solo i nomi: ingredienti, allergeni e tag `adatto_a` aggiuntivi li ho dedotti io, e sono segnati "da confermare con Nutririder" nella colonna note. kcal e macro sono vuoti.
 - Scheda Impostazioni: invio_attivo (ora "no": Claude sceglie i piatti ma non manda email), email_test (se compilato, tutte le email vanno lì), mittente_email (info@nutririder.com, da confermare che sia attivo), mittente_nome (Nutririder), oggetto_email, link_cta (https://nutririder.com), logo_url (vuoto finché il modulo non è online).
-- Codici condivisi tra modulo, script e foglio. Obiettivi: in forma, proteico, cuore, ipocalorica, chetogenica, vegetariana, vegana. Allergeni (i 14 UE): glutine, crostacei, uova, pesce, arachidi, soia, latte, frutta a guscio, sedano, senape, sesamo, solfiti, lupini, molluschi.
+- Codici condivisi tra modulo, script e foglio. Profili (colonna obiettivi): vegano, vegetariano, sportivo, digeribile, gravidanza, alta densità, ridotta densità. I profili Nutririder "celiaco", "intollerante al lattosio" e "privo di allergeni" passano dalle caselle allergie; nei piatti sono i tag senza glutine, senza lattosio, privo di allergeni. Cosa complica il pranzo (dalle "necessità generiche" del PDF): non posso riscaldare, pausa breve, budget limitato, non riesco a prepararlo, non posso uscire, non trovo cosa mi soddisfa, voglio sapere cosa mangio, voglio decidere prima. Allergeni (i 14 UE): glutine, crostacei, uova, pesce, arachidi, soia, latte, frutta a guscio, sedano, senape, sesamo, solfiti, lupini, molluschi.
 
 ## File del progetto
 
@@ -83,12 +83,12 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 ## Lavoro fatto
 
 - 25/11/2026: analisi di fattibilità, confronto tra algoritmo a regole e attività pianificata Claude, verifica dei limiti degli artefatti, clonazione del repository, verifica dell'accesso in scrittura, creazione di questo file. Deciso che `CLAUDE.md` resta fuori da `main` e che le email partono da un indirizzo Nutririder. Impostato il noindex e pubblicato su `main`. Ricevuto il foglio Google da usare come database. Verificato nella documentazione il trigger API delle attività pianificate.
-- 26/11/2026: confermato il flusso. Preparato il foglio (tre schede, piatti di esempio), scritto il modulo, lo script Apps Script e le istruzioni dell'attività, creata l'attività Claude. Ricevuta la cartella del brand: modulo ridisegnato sullo stile del sito (font, colori, logo), nome corretto in Nutririder ovunque, istruzioni dell'email allineate al tono del media kit.
+- 26/11/2026: confermato il flusso. Preparato il foglio (tre schede, piatti di esempio), scritto il modulo, lo script Apps Script e le istruzioni dell'attività, creata l'attività Claude. Ricevuta la cartella del brand: modulo ridisegnato sullo stile del sito (font, colori, logo), nome corretto in Nutririder ovunque, istruzioni dell'email allineate al tono del media kit. Ricevuti i 20 piatti veri: caricati sul foglio, modulo, script e istruzioni allineati ai 10 profili, aggiunta la domanda su cosa complica il pranzo.
 
 ## Domande aperte
 
-- La lista dei piatti Nutririder, con ingredienti, allergeni e, se ci sono, kcal e macro.
-- Le necessità da mappare con Jordan (gli obiettivi del modulo sono provvisori).
+- Ingredienti completi e allergeni dei 20 piatti, confermati da Nutririder, e se possibile kcal e macro.
+- Combinazioni senza piatti adatti (calcolo del 26/11/2026): sportivo + vegetariano nessun piatto col profilo, alta densità + glutine o latte nessuno, gravidanza + glutine o pesce uno solo, vegano o vegetariano + celiaco tre. Servono 3-4 piatti in più o si accetta il "da gestire a mano".
 - Quante persone si aspettano all'evento e la data.
 - Autenticazione del dominio nutririder.com su Brevo. info@nutririder.com è attivo?
 - Qual è l'indirizzo pubblico del sito (dominio o workers.dev)? Serve per il QR e per `logo_url`.
@@ -103,4 +103,4 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 3. Inserire l'indirizzo in `ENDPOINT` e pubblicare su `main` (il modulo è già online, manca solo il collegamento).
 4. Test con `invio_attivo` su "no": invio dal modulo, riga sul foglio, avvio di Claude, piatti scritti.
 5. Chiave Brevo salvata con il modulo sicuro delle credenziali (host api.brevo.com, header api-key), poi test con `email_test` compilato.
-6. Piatti veri, test con frasi realistiche, rete di sicurezza oraria prima dell'evento, QR con il link definitivo.
+6. Conferma ingredienti dei piatti, test con frasi realistiche, rete di sicurezza oraria prima dell'evento, QR con il link definitivo.
