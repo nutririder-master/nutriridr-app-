@@ -46,6 +46,8 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - Scheda Impostazioni: invio_attivo (ora "no": Claude sceglie i piatti ma non manda email), email_test (se compilato, tutte le email vanno lì), mittente_email (info@nutririder.com, da confermare che sia attivo), mittente_nome (Nutririder), oggetto_email, link_cta (https://nutririder.com), logo_url (vuoto finché il modulo non è online).
 - Codici condivisi tra modulo, script e foglio. Profili (colonna obiettivi): vegano, vegetariano, sportivo, digeribile, gravidanza, alta densità, ridotta densità. I profili Nutririder "celiaco", "intollerante al lattosio" e "privo di allergeni" passano dalle caselle allergie; nei piatti sono i tag senza glutine, senza lattosio, privo di allergeni. Cosa complica il pranzo (dalle "necessità generiche" del PDF): non posso riscaldare, pausa breve, budget limitato, non riesco a prepararlo, non posso uscire, non trovo cosa mi soddisfa, voglio sapere cosa mangio, voglio decidere prima. Allergeni (i 14 UE): glutine, crostacei, uova, pesce, arachidi, soia, latte, frutta a guscio, sedano, senape, sesamo, solfiti, lupini, molluschi.
 
+- Scheda per Jordan: "Nutririder, scheda piatti da completare", `1zIz1vm4_d-LIGWMvQyfe6alOqQQZ8JZcA3AtHxPjRog`, nella cartella Drive del cliente. Creata il 26/11/2026 perché Jordan ha chiesto a noi di preparare il file da compilare. Scheda "Come compilare" con le istruzioni e scheda "Piatti": 20 piatti con le nostre ipotesi su ingredienti e allergeni (una casella per ognuno dei 14 allergeni), colonne per kcal e macro, "si mangia freddo", "adatto in gravidanza", "confermato", "note per noi", più 4 righe vuote (N21-N24) per i piatti che coprono le combinazioni scoperte. Quando torna compilata, i dati vanno riportati nella scheda Piatti del database (allergeni da caselle a testo, tag `adatto_a` da ricalcolare).
+
 ## File del progetto
 
 - `public/index.html`: il modulo. La costante `ENDPOINT` nello script va riempita con l'indirizzo dell'applicazione web Apps Script.
@@ -87,7 +89,7 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 
 ## Domande aperte
 
-- Ingredienti completi e allergeni dei 20 piatti, confermati da Nutririder, e se possibile kcal e macro.
+- Ingredienti completi e allergeni dei 20 piatti, confermati da Nutririder, e se possibile kcal e macro: in attesa della scheda per Jordan compilata.
 - Combinazioni senza piatti adatti (calcolo del 26/11/2026): sportivo + vegetariano nessun piatto col profilo, alta densità + glutine o latte nessuno, gravidanza + glutine o pesce uno solo, vegano o vegetariano + celiaco tre. Servono 3-4 piatti in più o si accetta il "da gestire a mano".
 - Quante persone si aspettano all'evento e la data.
 - Autenticazione del dominio nutririder.com su Brevo. info@nutririder.com è attivo?
