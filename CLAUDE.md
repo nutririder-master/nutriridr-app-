@@ -21,11 +21,11 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 
 - Il risultato non deve per forza comparire subito sul telefono. Va bene che arrivi via email qualche tempo dopo (decisione del 25/11/2026).
 - Gli artefatti di Claude con chiamate a Claude dentro la pagina non vanno bene: usano l'account Claude di chi visita la pagina, e i visitatori dell'evento non ce l'hanno.
-- Direzione attuale (proposta del 25/11/2026, in attesa di conferma): modulo su Cloudflare, un Worker che salva il visitatore su Brevo e fa partire subito un'attività pianificata Claude tramite il suo endpoint API. L'attività legge da Brevo i contatti nuovi, li copia sul foglio Google, sceglie i due piatti e manda l'email con un template Brevo dal mittente NutriRider. Così non si pagano token e il testo libero viene capito senza dizionario di parole.
+- Flusso confermato il 26/11/2026: modulo su Cloudflare (pagina statica in `public/index.html`), che manda i dati a uno script Google Apps Script collegato al foglio. Lo script scrive la riga nella scheda Risposte con stato "nuovo" e chiama subito l'attività Claude tramite il suo indirizzo API. L'attività legge le righe in attesa, sceglie i due piatti, li scrive sul foglio e manda l'email con Brevo. Niente Worker Cloudflare: il suo lavoro lo fa Apps Script, che l'utente preferisce perché resta tutto attorno al foglio.
 - L'elaborazione deve partire su richiesta, non ogni ora (richiesta del 25/11/2026). Le attività pianificate a orario non scendono sotto l'ora, quindi si usa il trigger API: POST a `https://api.anthropic.com/v1/claude_code/routines/<trigger-id>/fire` con token bearer dell'attività, header `anthropic-beta: experimental-cc-routine-2026-04-01` e `anthropic-version: 2023-06-01`, corpo `{"text": "..."}` facoltativo. Limiti dichiarati nella documentazione: 30 avvii all'ora per singola attività, 100 all'ora per account, funzione sperimentale. Ogni avvio è una sessione nuova (qualche minuto di avvio) e consuma l'abbonamento. Ogni esecuzione deve quindi lavorare tutti i contatti in attesa, non solo l'ultimo, e un'esecuzione oraria fa da rete di sicurezza per gli avvii rifiutati.
-- Alternativa tenuta di riserva: algoritmo a regole (dizionario di sinonimi, negazioni, tolleranza ai refusi, filtro rigido sugli allergeni e punteggio sugli obiettivi) dentro il Worker Cloudflare, con risultato immediato e senza dipendere da Claude.
+- Alternativa tenuta di riserva: algoritmo a regole (dizionario di sinonimi, negazioni, tolleranza ai refusi, filtro rigido sugli allergeni e punteggio sugli obiettivi) dentro Apps Script, con risultato immediato e senza dipendere da Claude.
 - Allergie e intolleranze vanno raccolte come caselle da spuntare, non solo come testo libero: un errore lì è un rischio per la salute. I piatti con un allergene dichiarato vanno esclusi in modo rigido.
-- Le email ai visitatori partono da un indirizzo NutriRider, mai da quello dell'agenzia (decisione del 25/11/2026). L'agenzia lavora dietro le quinte. L'invio si fa con Brevo, su un account che l'utente crea per NutriRider (proposta del 25/11/2026). Il mittente deve stare su un dominio NutriRider autenticato su Brevo, non su @gmail.com. Piano gratuito: 300 email al giorno. Le chiavi API non passano mai dalla chat: per Claude si salvano con il modulo sicuro delle credenziali, per il Worker come secret Cloudflare. Due chiavi separate.
+- Le email ai visitatori partono da un indirizzo NutriRider, mai da quello dell'agenzia (decisione del 25/11/2026). L'agenzia lavora dietro le quinte. L'invio si fa con Brevo, su un account che l'utente crea per NutriRider (proposta del 25/11/2026). Il mittente deve stare su un dominio NutriRider autenticato su Brevo, non su @gmail.com. Piano gratuito: 300 email al giorno. Le chiavi API non passano mai dalla chat: per Claude si salvano con il modulo sicuro delle credenziali, Il token dell'attività Claude si salva nelle Proprietà script di Apps Script, non nel codice.
 - Privacy: allergie ed esigenze di salute sono dati sanitari per il GDPR. Servono un consenso esplicito al trattamento e un consenso separato per il marketing. L'informativa deve dire che le risposte vengono elaborate con Claude (Anthropic).
 
 ## Repository
@@ -40,7 +40,19 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 
 ## Foglio Google
 
-- "Database app nutririder": `118uNUi9MdJXpmeo85UPwosVJh6xVQ0Ru35Lfmzm0HNY`. Il 25/11/2026 era vuoto, con una sola scheda chiamata "Hoja 1" (impostazione in spagnolo). L'account dell'agenzia lo legge tramite il connettore Google Sheets.
+- "Database app nutririder": `118uNUi9MdJXpmeo85UPwosVJh6xVQ0Ru35Lfmzm0HNY`. Lingua italiana e fuso Europe/Rome (impostati il 26/11/2026, prima era es_MX). L'account dell'agenzia lo legge e lo modifica tramite il connettore Google Sheets.
+- Scheda Risposte, colonne A-T: ricevuta_il, id, nome, cognome, email, telefono, obiettivi, allergie, cosa_ti_piace, cosa_non_ti_piace, altre_esigenze, consenso_privacy, consenso_marketing, avvio_claude, stato, piatto_1, piatto_2, spiegazione, email_inviata_il, note. Stati: nuovo, in lavorazione, pronta (piatti scelti, email non inviata), inviata, errore.
+- Scheda Piatti, colonne A-L: id, nome, descrizione, ingredienti, allergeni, adatto_a, kcal, proteine_g, carboidrati_g, grassi_g, attivo, note. Ora contiene 9 piatti di ESEMPIO inventati (P01-P09), da sostituire con quelli veri.
+- Scheda Impostazioni: invio_attivo (ora "no": Claude sceglie i piatti ma non manda email), email_test (se compilato, tutte le email vanno lì), mittente_email, mittente_nome, oggetto_email, link_cta.
+- Codici condivisi tra modulo, script e foglio. Obiettivi: in forma, proteico, cuore, ipocalorica, chetogenica, vegetariana, vegana. Allergeni (i 14 UE): glutine, crostacei, uova, pesce, arachidi, soia, latte, frutta a guscio, sedano, senape, sesamo, solfiti, lupini, molluschi.
+
+## File del progetto
+
+- `public/index.html`: il modulo. La costante `ENDPOINT` nello script va riempita con l'indirizzo dell'applicazione web Apps Script.
+- `public/_headers`: noindex.
+- `apps-script/Codice.gs`: lo script da incollare nel foglio (Estensioni > Apps Script) e pubblicare come applicazione web. Legge `CLAUDE_FIRE_URL` e `CLAUDE_FIRE_TOKEN` dalle Proprietà script.
+- `automazione/istruzioni-attivita.md`: le istruzioni dell'attività Claude. Se cambiano, vanno aggiornate anche nell'attività (update_trigger).
+- Attività Claude: "NutriRider, piatti per i visitatori", id `trig_01AstyDXpML5UUuo7fa7kALh`, creata il 26/11/2026, senza orario (parte solo su chiamata), una sessione nuova a ogni avvio. Creata da questa sessione senza connettori: il connettore Google Sheets va aggiunto dall'interfaccia di claude.ai, altrimenti non può leggere il foglio. Il token API si genera dalla stessa interfaccia.
 
 ## Regole di scrittura per i testi rivolti alle persone
 
@@ -56,22 +68,24 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 ## Lavoro fatto
 
 - 25/11/2026: analisi di fattibilità, confronto tra algoritmo a regole e attività pianificata Claude, verifica dei limiti degli artefatti, clonazione del repository, verifica dell'accesso in scrittura, creazione di questo file. Deciso che `CLAUDE.md` resta fuori da `main` e che le email partono da un indirizzo NutriRider. Impostato il noindex e pubblicato su `main`. Ricevuto il foglio Google da usare come database. Verificato nella documentazione il trigger API delle attività pianificate.
+- 26/11/2026: confermato il flusso. Preparato il foglio (tre schede, piatti di esempio), scritto il modulo, lo script Apps Script e le istruzioni dell'attività, creata l'attività Claude.
 
 ## Domande aperte
 
 - La lista dei piatti NutriRider, con ingredienti, allergeni e, se ci sono, kcal e macro.
-- Le necessità da mappare con Jordan.
-- Quante persone si aspettano all'evento (serve per i limiti di invio email).
-- Conferma del flusso con Brevo e trigger API.
-- NutriRider ha un dominio suo, e qualcuno può modificarne i DNS per autenticarlo su Brevo?
-- Il repository è collegato a Cloudflare con pubblicazione automatica da `main`?
-- Piano Claude dell'account che esegue le attività: con molti visitatori i limiti d'uso contano.
-- Data dell'evento.
+- Le necessità da mappare con Jordan (gli obiettivi del modulo sono provvisori).
+- Quante persone si aspettano all'evento e la data.
+- Autenticazione del dominio NutriRider su Brevo e indirizzo mittente.
+- Il repository pubblica su Cloudflare in automatico da `main`? Qual è l'indirizzo del sito?
+- Piano Claude dell'account che esegue l'attività: con molti visitatori i limiti d'uso contano.
+- Informativa privacy completa di NutriRider (ragione sociale, contatti del titolare). Nel modulo c'è un testo breve provvisorio.
+- Link per il bottone in fondo all'email (link_cta).
 
 ## Prossimi passi
 
-1. Pagina del modulo in `public/index.html`, nei colori del brand, pensata per il telefono, con noindex.
-2. Worker Cloudflare: riceve il modulo, salva il contatto su Brevo, chiama il trigger API.
-3. Foglio Google con due schede: "Risposte" e "Piatti" (i piatti modificabili dal team senza toccare codice).
-4. Istruzioni dell'attività pianificata: leggere i contatti in attesa, escludere i piatti incompatibili, scegliere i due migliori, mandare l'email con Brevo, segnare il contatto come servito, aggiornare il foglio.
-5. Test con frasi realistiche prima dell'evento, poi generazione del QR con il link definitivo.
+1. L'utente aggiunge il connettore Google Sheets all'attività e genera indirizzo API e token da claude.ai.
+2. L'utente incolla `apps-script/Codice.gs` nel foglio, salva URL e token nelle Proprietà script, pubblica l'applicazione web e passa l'indirizzo.
+3. Inserire l'indirizzo in `ENDPOINT`, pubblicare il modulo su `main`.
+4. Test con `invio_attivo` su "no": invio dal modulo, riga sul foglio, avvio di Claude, piatti scritti.
+5. Chiave Brevo salvata con il modulo sicuro delle credenziali (host api.brevo.com, header api-key), poi test con `email_test` compilato.
+6. Piatti veri, test con frasi realistiche, rete di sicurezza oraria prima dell'evento, QR con il link definitivo.
