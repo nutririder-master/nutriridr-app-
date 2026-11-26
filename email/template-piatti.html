@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<title>I tuoi due piatti Nutririder</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 0; background: #FAF4E8; }
+  a { color: #2F6B4F; }
+  @media (max-width: 620px) {
+    .contenitore { width: 100% !important; }
+    .pad { padding-left: 20px !important; padding-right: 20px !important; }
+    .titolo { font-size: 26px !important; line-height: 32px !important; }
+    .cta-titolo { font-size: 22px !important; line-height: 28px !important; }
+    .macro td { padding: 10px 4px !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background:#FAF4E8;">
+<!-- Testo di anteprima nella casella di posta -->
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#FAF4E8;">{{ params.anteprima }}</div>
+
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#FAF4E8;">
+<tr><td align="center" style="padding:28px 12px 40px;">
+
+  <table role="presentation" class="contenitore" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px; max-width:600px;">
+
+    <!-- Logo -->
+    <tr><td align="center" style="padding:0 0 22px;">
+      {% if params.logo_url %}
+      <img src="{{ params.logo_url }}" width="120" alt="Nutririder" style="display:block; width:120px; height:auto; border:0;">
+      {% else %}
+      <span style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:30px; font-weight:700; letter-spacing:-0.5px;"><span style="color:#2F6B4F;">nutri</span><span style="color:#F28C38;">rider</span></span>
+      {% endif %}
+    </td></tr>
+
+    <!-- Scheda principale -->
+    <tr><td style="background:#FFFFFF; border-radius:24px; border:1px solid #E7DFCF; overflow:hidden;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+
+        <!-- Apertura -->
+        <tr><td class="pad" style="background:#E6EEE8; border-radius:24px 24px 0 0; padding:36px 40px 30px;">
+          <div style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#B8611A; padding-bottom:10px;">Scelti per te</div>
+          <div class="titolo" style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:30px; line-height:36px; font-weight:700; color:#2F6B4F;">Ciao {{ params.nome }}, ecco i tuoi piatti</div>
+          <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:17px; line-height:26px; color:#4F5A52; padding-top:12px;">{{ params.intro }}</div>
+          {% if params.profilo %}
+          <div style="padding-top:18px; font-size:0; line-height:0;">
+            {% for voce in params.profilo %}<span style="display:inline-block; margin:0 6px 6px 0; font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:12px; line-height:16px; font-weight:500; color:#2F6B4F; background:#FFFFFF; border:1px solid #8FB59F; border-radius:999px; padding:5px 12px;">{{ voce }}</span>{% endfor %}
+          </div>
+          {% endif %}
+        </td></tr>
+
+        <!-- Piatti -->
+        {% for piatto in params.piatti %}
+        <tr><td class="pad" style="padding:28px 40px 0;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #E7DFCF; border-radius:20px;">
+            {% if piatto.foto %}
+            <tr><td style="padding:0; line-height:0; font-size:0;">
+              <img src="{{ piatto.foto }}" width="518" alt="{{ piatto.nome }}" style="display:block; width:100%; max-width:518px; height:auto; border:0; border-radius:19px 19px 0 0;">
+            </td></tr>
+            {% endif %}
+            <tr><td style="padding:24px 24px 22px;">
+
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td valign="top" style="padding-right:14px;">
+                    <div style="width:38px; height:38px; line-height:38px; border-radius:19px; background:#F28C38; color:#1F2A24; text-align:center; font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:17px; font-weight:700;">{{ piatto.numero }}</div>
+                  </td>
+                  <td valign="middle">
+                    <div style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:20px; line-height:26px; font-weight:700; color:#2F6B4F;">{{ piatto.nome }}</div>
+                  </td>
+                </tr>
+              </table>
+
+              {% if piatto.descrizione %}
+              <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:16px; line-height:24px; color:#4F5A52; padding-top:12px;">{{ piatto.descrizione }}</div>
+              {% endif %}
+
+              {% if piatto.tag %}
+              <div style="padding-top:14px; font-size:0; line-height:0;">
+                {% for t in piatto.tag %}<span style="display:inline-block; margin:0 6px 6px 0; font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:12px; line-height:16px; font-weight:500; color:#2F6B4F; background:#E6EEE8; border-radius:999px; padding:5px 11px;">{{ t }}</span>{% endfor %}
+              </div>
+              {% endif %}
+
+              {% if piatto.kcal %}
+              <table role="presentation" class="macro" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:14px; background:#FAF4E8; border-radius:14px;">
+                <tr>
+                  <td align="center" style="padding:12px 6px; font-family:'Poppins', Arial, Helvetica, sans-serif;"><div style="font-size:17px; font-weight:700; color:#1F2A24;">{{ piatto.kcal }}</div><div style="font-size:11px; color:#4F5A52;">kcal</div></td>
+                  <td align="center" style="padding:12px 6px; font-family:'Poppins', Arial, Helvetica, sans-serif;"><div style="font-size:17px; font-weight:700; color:#1F2A24;">{{ piatto.proteine }} g</div><div style="font-size:11px; color:#4F5A52;">proteine</div></td>
+                  <td align="center" style="padding:12px 6px; font-family:'Poppins', Arial, Helvetica, sans-serif;"><div style="font-size:17px; font-weight:700; color:#1F2A24;">{{ piatto.carboidrati }} g</div><div style="font-size:11px; color:#4F5A52;">carboidrati</div></td>
+                  <td align="center" style="padding:12px 6px; font-family:'Poppins', Arial, Helvetica, sans-serif;"><div style="font-size:17px; font-weight:700; color:#1F2A24;">{{ piatto.grassi }} g</div><div style="font-size:11px; color:#4F5A52;">grassi</div></td>
+                </tr>
+              </table>
+              {% endif %}
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:16px;">
+                <tr><td style="background:#FCE3CC; border-radius:14px; padding:14px 16px;">
+                  <div style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:12px; font-weight:600; color:#8A4710; padding-bottom:4px;">Perché fa per te</div>
+                  <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:15px; line-height:22px; color:#1F2A24;">{{ piatto.perche }}</div>
+                </td></tr>
+              </table>
+
+            </td></tr>
+          </table>
+        </td></tr>
+        {% endfor %}
+
+        <!-- Domanda finale -->
+        <tr><td class="pad" style="padding:32px 40px 40px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr><td align="center" style="background:#2F6B4F; border-radius:20px; padding:32px 28px;">
+              <div class="cta-titolo" style="font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:24px; line-height:30px; font-weight:700; color:#FFFFFF;">Ti ricordi cosa hai mangiato ieri a pranzo?</div>
+              <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:16px; line-height:24px; color:#E6EEE8; padding-top:10px;">Noi sì, perché è scritto qui sopra. Tieni questa email: la prossima volta che non sai cosa mangiare, riparti da questi piatti.</div>
+              {% if params.link_cta %}
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top:22px;">
+                <tr><td align="center" style="background:#F28C38; border-radius:14px;">
+                  <a href="{{ params.link_cta }}" style="display:inline-block; padding:14px 28px; font-family:'Poppins', Arial, Helvetica, sans-serif; font-size:16px; font-weight:600; color:#1F2A24; text-decoration:none;">Scopri Nutririder</a>
+                </td></tr>
+              </table>
+              {% endif %}
+            </td></tr>
+          </table>
+        </td></tr>
+
+      </table>
+    </td></tr>
+
+    <!-- Piè di pagina -->
+    <tr><td align="center" class="pad" style="padding:26px 30px 0;">
+      <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:16px; font-style:italic; color:#2F6B4F;">Mangiare bene, anche senza tempo.</div>
+      <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:13px; line-height:20px; color:#4F5A52; padding-top:14px;">
+        Hai un'allergia grave? Prima di mangiare un piatto controlla sempre gli ingredienti{% if params.contatto %}, o scrivici a <a href="mailto:{{ params.contatto }}" style="color:#2F6B4F;">{{ params.contatto }}</a>{% endif %}.
+      </div>
+      <div style="font-family:'Lora', Georgia, 'Times New Roman', serif; font-size:12px; line-height:18px; color:#8A928C; padding-top:12px;">
+        Ricevi questa email perché hai risposto al questionario Nutririder. Siena, <a href="https://nutririder.com" style="color:#8A928C;">nutririder.com</a>
+      </div>
+    </td></tr>
+
+  </table>
+
+</td></tr>
+</table>
+</body>
+</html>

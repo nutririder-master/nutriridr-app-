@@ -49,11 +49,20 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 
 - Scheda per Jordan: "Nutririder, scheda piatti da completare", `1zIz1vm4_d-LIGWMvQyfe6alOqQQZ8JZcA3AtHxPjRog`, nella cartella Drive del cliente. Creata il 26/11/2026 perché Jordan ha chiesto a noi di preparare il file da compilare. Scheda "Come compilare" con le istruzioni e scheda "Piatti": 20 piatti con le nostre ipotesi su ingredienti e allergeni (una casella per ognuno dei 14 allergeni), colonne per kcal e macro, "si mangia freddo", "adatto in gravidanza", "confermato", "note per noi", più 4 righe vuote (N21-N24) per i piatti che coprono le combinazioni scoperte. Quando torna compilata, i dati vanno riportati nella scheda Piatti del database (allergeni da caselle a testo, tag `adatto_a` da ricalcolare).
 
+## Email
+
+- Template grafico salvato su Brevo come modello transazionale "Nutririder, i tuoi piatti", id 1 (impostazione `template_id`), oggetto `{{ params.oggetto }}`, mittente noreply, replyTo info. Sorgente in `email/template-piatti.html`, linguaggio template di Brevo (`{{ params.x }}`, `{% if %}`, `{% for %}`). Se si modifica il file, va ricaricato su Brevo con `PUT /v3/smtp/templates/1`. Anteprima locale: render con jinja2 e screenshot Playwright.
+- Struttura: logo, apertura su fondo verde tenue con nome ed etichette del profilo, una scheda per piatto (foto facoltativa in cima, numero, nome, descrizione, etichette, riquadro kcal e macro solo se ci sono, "Perché fa per te"), riquadro verde con la domanda "Ti ricordi cosa hai mangiato ieri a pranzo?" e bottone arancio, piè di pagina con payoff, nota allergie e contatto.
+- L'attività non scrive HTML: compila `params` (oggetto, anteprima, nome, intro, profilo, logo_url, link_cta, contatto, piatti con numero, nome, descrizione, tag, kcal, proteine, carboidrati, grassi, perche, foto).
+- Foto dei piatti (richiesta dell'utente del 26/11/2026): colonna `foto_url` (N) nella scheda Piatti, vuota. Il media kit di Nutririder dice niente foto stock di piatti non loro fino al pilot: la fonte delle foto è da decidere con l'utente.
+- `logo_url` = https://app.nutririder.com/logo.png. Il modulo è pubblicato su https://app.nutririder.com/ (verificato il 26/11/2026: ultima versione, noindex attivo).
+
 ## File del progetto
 
 - `public/index.html`: il modulo. La costante `ENDPOINT` nello script va riempita con l'indirizzo dell'applicazione web Apps Script.
 - `public/_headers`: noindex.
 - `public/logo.png`: logo Nutririder.
+- `email/template-piatti.html`: template dell'email, caricato su Brevo.
 - `apps-script/Codice.gs`: lo script da incollare nel foglio (Estensioni > Apps Script) e pubblicare come applicazione web. Legge `CLAUDE_FIRE_URL` e `CLAUDE_FIRE_TOKEN` dalle Proprietà script.
 - `automazione/istruzioni-attivita.md`: le istruzioni dell'attività Claude. Se cambiano, vanno aggiornate anche nell'attività (update_trigger).
 - Attività Claude: "Nutririder, piatti per i visitatori", id `trig_01AstyDXpML5UUuo7fa7kALh`, creata il 26/11/2026, senza orario (parte solo su chiamata), una sessione nuova a ogni avvio. Il 26/11/2026 l'utente ha aggiunto il connettore Google Sheets e il trigger API con token (indirizzo `https://api.anthropic.com/v1/claude_code/routines/trig_01AstyDXpML5UUuo7fa7kALh/fire`). Prova di avvio da Apps Script alle 13:40 riuscita: la sessione ha letto il foglio con il connettore e non ha trovato righe. Le istruzioni chiedono di rispondere in italiano.
@@ -94,7 +103,6 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 - Combinazioni senza piatti adatti (calcolo del 26/11/2026): sportivo + vegetariano nessun piatto col profilo, alta densità + glutine o latte nessuno, gravidanza + glutine o pesce uno solo, vegano o vegetariano + celiaco tre. Servono 3-4 piatti in più o si accetta il "da gestire a mano".
 - Quante persone si aspettano all'evento e la data.
 - info@nutririder.com è attivo? Riceve le risposte dei visitatori.
-- Qual è l'indirizzo pubblico del sito (dominio o workers.dev)? Serve per il QR e per `logo_url`.
 - Piano Claude dell'account che esegue l'attività: con molti visitatori i limiti d'uso contano.
 - Informativa privacy completa di Nutririder (ragione sociale, contatti del titolare). Nel modulo c'è un testo breve provvisorio.
 - Link per il bottone in fondo all'email (link_cta).
