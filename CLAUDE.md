@@ -55,7 +55,7 @@ Vincoli: precisione quasi massima, zero budget, niente API a pagamento di modell
 - `public/logo.png`: logo Nutririder.
 - `apps-script/Codice.gs`: lo script da incollare nel foglio (Estensioni > Apps Script) e pubblicare come applicazione web. Legge `CLAUDE_FIRE_URL` e `CLAUDE_FIRE_TOKEN` dalle Proprietà script.
 - `automazione/istruzioni-attivita.md`: le istruzioni dell'attività Claude. Se cambiano, vanno aggiornate anche nell'attività (update_trigger).
-- Attività Claude: "Nutririder, piatti per i visitatori", id `trig_01AstyDXpML5UUuo7fa7kALh`, creata il 26/11/2026, senza orario (parte solo su chiamata), una sessione nuova a ogni avvio. Creata da questa sessione senza connettori: il connettore Google Sheets va aggiunto dall'interfaccia di claude.ai, altrimenti non può leggere il foglio. Il token API si genera dalla stessa interfaccia.
+- Attività Claude: "Nutririder, piatti per i visitatori", id `trig_01AstyDXpML5UUuo7fa7kALh`, creata il 26/11/2026, senza orario (parte solo su chiamata), una sessione nuova a ogni avvio. Il 26/11/2026 l'utente ha aggiunto il connettore Google Sheets e il trigger API con token (indirizzo `https://api.anthropic.com/v1/claude_code/routines/trig_01AstyDXpML5UUuo7fa7kALh/fire`). Prova di avvio da Apps Script alle 13:40 riuscita: la sessione ha letto il foglio con il connettore e non ha trovato righe. Le istruzioni chiedono di rispondere in italiano.
 
 ## Brand Nutririder
 
@@ -100,8 +100,8 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 
 ## Prossimi passi
 
-1. L'utente aggiunge il connettore Google Sheets all'attività e genera indirizzo API e token da claude.ai.
-2. L'utente incolla `apps-script/Codice.gs` nel foglio, salva URL e token nelle Proprietà script, pubblica l'applicazione web e passa l'indirizzo.
+1. Fatto il 26/11/2026: connettore, token, script incollato nel foglio con le Proprietà script, prova di avvio riuscita. Lo script è installato con un account Google diverso da quello predefinito nel browser dell'utente (l'altro dava "Impossibile aprire il file").
+2. L'utente pubblica lo script come applicazione web (Esegui come: Me, Chi ha accesso: Chiunque) e passa l'indirizzo `/exec`, più l'indirizzo della pagina del modulo.
 3. Inserire l'indirizzo in `ENDPOINT` e pubblicare su `main` (il modulo è già online, manca solo il collegamento).
 4. Test con `invio_attivo` su "no": invio dal modulo, riga sul foglio, avvio di Claude, piatti scritti.
 5. Chiave Brevo salvata con il modulo sicuro delle credenziali (host api.brevo.com, header api-key), poi test con `email_test` compilato.

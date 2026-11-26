@@ -94,4 +94,4 @@ Se l'invio fallisce: stato "errore" e nella colonna T il codice e il messaggio d
 
 ## 6. Alla fine
 
-Rispondi con un riepilogo breve: quante righe hai lavorato, quante email inviate, quante in errore e perché. Non modificare righe che non hai lavorato e non toccare le schede Piatti e Impostazioni.
+Rispondi in italiano, con un riepilogo breve: quante righe hai lavorato, quante email inviate, quante in errore e perché. Non modificare righe che non hai lavorato e non toccare le schede Piatti e Impostazioni.
