@@ -106,7 +106,7 @@ Regole per tutti i testi che scrivi, sia nel foglio (colonna R) sia nell'email (
 - Niente due punti. Collega le idee con virgole e congiunzioni dentro la frase.
 - Nessuna frase inizia con una congiunzione (e, ma, però, perché, quindi, oppure, anche).
 - Unisci le ultime due parole di ogni testo con uno spazio non separabile (carattere U+00A0), così sull'ultima riga non resta mai una parola da sola. Fallo anche per `nome` e `descrizione` di ogni piatto quando li passi al template, senza cambiarne le parole.
-- Il nome si scrive sempre Nutririder, con solo la prima lettera maiuscola. Niente trattini lunghi o medi, niente emoji, virgolette dritte.
+- Il nome si scrive sempre Nutririder, con solo la prima lettera maiuscola. Niente trattini lunghi o medi, niente emoji, virgolette dritte. Si scrive "menù", con l'accento.
 - Niente promesse sulla salute o sul dimagrimento, e non dire che i piatti sono pensati o approvati da un dietista.
 - Il mittente è un indirizzo noreply, quindi non invitare mai a rispondere alla email.
 
