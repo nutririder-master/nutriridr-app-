@@ -101,8 +101,8 @@ Valgono per pagine, email, documenti, in italiano e in inglese.
 ## Prossimi passi
 
 1. Fatto il 26/11/2026: connettore, token, script incollato nel foglio con le Proprietà script, prova di avvio riuscita. Lo script è installato con un account Google diverso da quello predefinito nel browser dell'utente (l'altro dava "Impossibile aprire il file").
-2. L'utente pubblica lo script come applicazione web (Esegui come: Me, Chi ha accesso: Chiunque) e passa l'indirizzo `/exec`, più l'indirizzo della pagina del modulo.
-3. Inserire l'indirizzo in `ENDPOINT` e pubblicare su `main` (il modulo è già online, manca solo il collegamento).
-4. Test con `invio_attivo` su "no": invio dal modulo, riga sul foglio, avvio di Claude, piatti scritti.
+2. Fatto il 26/11/2026: applicazione web pubblicata, `https://script.google.com/macros/s/AKfycbyMITawRo3QNc7PYT5YgG1K0knqoQZzmFgTcOAio4sO_O2Ote_69CCJEM-NopIdSAV1_w/exec`, inserita in `ENDPOINT` e pubblicata su `main` (commit 2c3eabe, build Cloudflare riuscita).
+3. Primo test completo riuscito il 26/11/2026 con un invio via curl (riga 2, "Prova Tecnica", vegana e celiaca, non può riscaldare, marcata "TEST DI CLAUDE, da cancellare"): riga scritta, Claude avviato alle 13:44:49, stato "pronta" con insalata di ceci e polenta con ragù di lenticchie, spiegazioni corrette.
+4. Prova dal telefono dell'utente e casi difficili (gravidanza, sportivo vegetariano, più allergie, frasi scritte male), poi pulizia delle righe di test.
 5. Chiave Brevo salvata con il modulo sicuro delle credenziali (host api.brevo.com, header api-key), poi test con `email_test` compilato.
 6. Conferma ingredienti dei piatti, test con frasi realistiche, rete di sicurezza oraria prima dell'evento, QR con il link definitivo.
